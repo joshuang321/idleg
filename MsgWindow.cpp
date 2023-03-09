@@ -16,6 +16,7 @@ static HINSTANCE g_hInst{};
 static HWND CreateMsgWindow();
 static LRESULT MsgWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
+static void CorrectDirectory();
 static void InitHooks();
 static void UnInitHooks();
 static void CreateFrameWindowThread();
@@ -30,6 +31,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     MSG Msg;
     g_hInst = hInstance;
 
+    CorrectDirectory();
     InitHooks();
     GetFrameData(&g_FrameData);
     g_FrameData.nSeconds = MILSECONDS(g_FrameData.nSeconds);
@@ -109,6 +111,23 @@ static LRESULT MsgWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         return 0;
     }
     return DefWindowProcW(hWnd, uMsg, wParam, lParam);
+}
+
+static void CorrectDirectory()
+{
+    std::wstring_view wstrView;
+    WCHAR pszModuleFilename[2*MAX_PATH+1];
+
+    DWORD dwChDir = GetModuleFileNameW((HMODULE)g_hInst, pszModuleFilename,
+		MAX_PATH);
+
+	if (dwChDir > 0) {
+
+		wstrView = std::wstring_view(pszModuleFilename);
+		dwChDir = wstrView.find_last_of(L'\\');
+		pszModuleFilename[dwChDir+1] = '\0';
+		SetCurrentDirectoryW(pszModuleFilename);
+	}
 }
 
 static void InitHooks()
