@@ -3,6 +3,7 @@
 
 #include <Windows.h>
 #include <cassert>
+#include <string>
 
 static LPCWSTR g_lpszWindowName = LPSZMSGWNDNAME;
 
