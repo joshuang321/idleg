@@ -67,8 +67,6 @@ static HWND CreateMsgWindow()
         g_hInst, NULL);
 }
 
-#include <string>
-
 static LRESULT MsgWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     static int nCount{};
