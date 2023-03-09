@@ -1,0 +1,5 @@
+#include "resource.h"
+
+CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "idleg-gui.exe.manifest"
+
+IDI_APP ICON "okayeg.ico"
